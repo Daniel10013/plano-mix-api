@@ -1,7 +1,7 @@
 import z from "zod";
-import StoreRepository from "../Repository/StoreRepository.ts";
-import type { VisitHistoryStore, VisitStore, VisitStoreCreate, VisitStoreUpdate } from "../Types/Visit.ts";
-import type { Store, StoreRead, StoreInShopping, StoreWithClassification, StoreList } from "../Types/Store.ts";
+import StoreRepository from '../Repository/StoreRepository';
+import type { VisitHistoryStore, VisitStore, VisitStoreCreate, VisitStoreUpdate } from '../Types/Visit';
+import type { Store, StoreRead, StoreInShopping, StoreWithClassification, StoreList } from '../Types/Store';
 
 class StoreService {
     private repository: StoreRepository;

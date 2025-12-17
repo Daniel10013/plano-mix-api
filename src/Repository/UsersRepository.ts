@@ -1,5 +1,5 @@
-import { Shopping, ShoppingStore, Store, User, Visit } from '../Lib/Database/Prisma.ts';
-import type { Stats, UserRead, User as UserToCreate } from '../Types/User.ts';
+import { Shopping, ShoppingStore, Store, User, Visit } from '../Lib/Database/Prisma';
+import type { Stats, UserRead, User as UserToCreate } from '../Types/User';
 class UsersRepository {
 
 

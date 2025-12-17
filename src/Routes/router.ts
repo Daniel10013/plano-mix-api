@@ -2,8 +2,8 @@ import { Router } from "express";
 import userRoutes from "./users.js";
 import storeRoutes from "./store.js"
 import shoppingRoutes from "./shopping.js"
-import classificationRoutes from "./classification.ts"
-import visitRoutes from "./visit.ts"
+import classificationRoutes from './classification'
+import visitRoutes from './visit'
 
 const routes = Router();
 

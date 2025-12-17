@@ -1,5 +1,5 @@
-import type { Token } from "../Types/Token.ts";
-import { ResetPassword } from "../Lib/Database/Prisma.ts";
+import type { Token } from '../Types/Token';
+import { ResetPassword } from '../Lib/Database/Prisma';
 
 class TokenRepository {
 

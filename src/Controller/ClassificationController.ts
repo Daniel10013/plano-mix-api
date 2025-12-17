@@ -1,7 +1,7 @@
 import type { Request, Response } from "express";
-import handleError from "../Lib/Error/Handle.ts";
-import type { Activity, Classification, Segment } from "../Types/Classification.ts";
-import ClassificationService from "../Service/ClassificationService.ts";
+import handleError from '../Lib/Error/Handle';
+import type { Activity, Classification, Segment } from '../Types/Classification';
+import ClassificationService from '../Service/ClassificationService';
 
 
 class ClassificationController {

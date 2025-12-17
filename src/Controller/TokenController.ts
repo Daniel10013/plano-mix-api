@@ -1,6 +1,6 @@
-import TokenService from "../Service/TokenService.ts";
+import TokenService from '../Service/TokenService';
 import type { Request, Response } from "express";
-import handleError from "../Lib/Error/Handle.ts";
+import handleError from '../Lib/Error/Handle';
 
 class TokenController {
     private service: TokenService;

@@ -1,7 +1,7 @@
-import UsersService from "./UsersService.ts";
-import type { Token } from "../Types/Token.ts";
+import UsersService from './UsersService';
+import type { Token } from '../Types/Token';
 import { randomBytes, createHash} from "crypto";
-import TokenRepository from "../Repository/TokenRepository.ts";
+import TokenRepository from '../Repository/TokenRepository';
 
 class TokenService {
 

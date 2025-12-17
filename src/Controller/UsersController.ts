@@ -1,9 +1,9 @@
 import type { Request, Response } from "express";
-import UsersService from "../Service/UsersService.ts";
-import type { User, AuthData, UserRead, UserResetPass } from "../Types/User.ts";
-import handleError from "../Lib/Error/Handle.ts";
-import { generateToken } from "../Lib/Auth/JWT.ts";
-import TokenService from "../Service/TokenService.ts";
+import UsersService from '../Service/UsersService';
+import type { User, AuthData, UserRead, UserResetPass } from '../Types/User';
+import handleError from '../Lib/Error/Handle';
+import { generateToken } from '../Lib/Auth/JWT';
+import TokenService from '../Service/TokenService';
 import { success } from "zod";
 
 class UsersController {

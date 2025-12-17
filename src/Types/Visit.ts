@@ -1,4 +1,4 @@
-import type { StoreWithClassification } from "./Store.ts"
+import type { StoreWithClassification } from './Store'
 
 export type Visit = {
     id: string,

@@ -1,6 +1,6 @@
 import { Router } from "express";
-import { authenticate } from "../Middleware/Auth.ts";
-import ClassificationController from "../Controller/ClassificationController.ts";
+import { authenticate } from '../Middleware/Auth';
+import ClassificationController from '../Controller/ClassificationController';
 
 
 const router = Router()

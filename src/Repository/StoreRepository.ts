@@ -1,7 +1,7 @@
-import type { Store as StoreData, StoreList } from "../Types/Store.ts";
-import prisma, { ShoppingStore, Store } from "../Lib/Database/Prisma.ts";
-import type { VisitHistoryStore, VisitStoreCreate, VisitStoreUpdate } from "../Types/Visit.ts";
-import type { StoreRead, StoreInShopping, StoreWithClassification } from "../Types/Store.ts";
+import type { Store as StoreData, StoreList } from '../Types/Store';
+import prisma, { ShoppingStore, Store } from '../Lib/Database/Prisma';
+import type { VisitHistoryStore, VisitStoreCreate, VisitStoreUpdate } from '../Types/Visit';
+import type { StoreRead, StoreInShopping, StoreWithClassification } from '../Types/Store';
 
 class StoreRepository {
 

@@ -1,5 +1,5 @@
-import { Classification, Segment, Activity, Mix  } from "../Lib/Database/Prisma.ts";
-import type { Classification as ClassificationData, Segment as SegmentData, Activity as ActivityData, Mix as MixData, ClassificationRead } from "../Types/Classification.ts";
+import { Classification, Segment, Activity, Mix  } from '../Lib/Database/Prisma';
+import type { Classification as ClassificationData, Segment as SegmentData, Activity as ActivityData, Mix as MixData, ClassificationRead } from '../Types/Classification';
 
 
 

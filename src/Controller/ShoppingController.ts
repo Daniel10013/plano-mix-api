@@ -1,7 +1,7 @@
 import type { Request, Response } from "express";
-import handleError from "../Lib/Error/Handle.ts";
-import type { Shopping } from "../Types/Shopping.ts";
-import ShoppingService from "../Service/ShoppingService.ts";
+import handleError from '../Lib/Error/Handle';
+import type { Shopping } from '../Types/Shopping';
+import ShoppingService from '../Service/ShoppingService';
 import { success } from "zod";
 
 class ShoppingController {

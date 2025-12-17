@@ -1,5 +1,5 @@
 import { SignJWT, jwtVerify } from "jose";
-import type { UserRead, JWTPayload } from "../../Types/User.ts";
+import type { UserRead, JWTPayload } from '../../Types/User';
 
 
 const getKey = () => {

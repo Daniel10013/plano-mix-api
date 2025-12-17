@@ -1,6 +1,6 @@
-import prisma, { Classification, Shopping, ShoppingStore } from "../Lib/Database/Prisma.ts";
-import type { AnalyticClassification, ShoppingRead } from "../Types/Shopping.ts";
-import type { Shopping as ShoppingData } from "../Types/Shopping.ts";
+import prisma, { Classification, Shopping, ShoppingStore } from '../Lib/Database/Prisma';
+import type { AnalyticClassification, ShoppingRead } from '../Types/Shopping';
+import type { Shopping as ShoppingData } from '../Types/Shopping';
 
 class ShoppingRepository {
 

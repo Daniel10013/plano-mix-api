@@ -1,6 +1,6 @@
 import { Router } from "express";
-import { authenticate } from "../Middleware/Auth.ts";
-import ShoppingController from "../Controller/ShoppingController.ts";
+import { authenticate } from '../Middleware/Auth';
+import ShoppingController from '../Controller/ShoppingController';
 
 const router = Router()
 const controller = new ShoppingController();

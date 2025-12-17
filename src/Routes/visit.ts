@@ -1,7 +1,7 @@
 import { Router } from "express";
-import { authenticate } from "../Middleware/Auth.ts";
-import { admin } from "../Middleware/Role.ts";
-import VisitController from "../Controller/VisitController.ts";
+import { authenticate } from '../Middleware/Auth';
+import { admin } from '../Middleware/Role';
+import VisitController from '../Controller/VisitController';
 
 const router = Router();
 const controller = new VisitController();

@@ -1,7 +1,7 @@
 import { z } from 'zod';
-import StoreService from './StoreService.ts';
-import VisitRepository from "../Repository/VisitRepository.ts";
-import type {CompareVisitHistory, VisitCreate, VisitDetailsWithStores, VisitHistory, VisitRequest, VisitStore } from "../Types/Visit.ts";
+import StoreService from './StoreService';
+import VisitRepository from '../Repository/VisitRepository';
+import type {CompareVisitHistory, VisitCreate, VisitDetailsWithStores, VisitHistory, VisitRequest, VisitStore } from '../Types/Visit';
 
 class VisitService {
 

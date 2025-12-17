@@ -1,6 +1,6 @@
 import z from "zod";
-import type { AnalyticClassification, Shopping, ShoppingRead } from "../Types/Shopping.ts";
-import ShoppingRepository from "../Repository/ShoppingRepository.ts";
+import type { AnalyticClassification, Shopping, ShoppingRead } from '../Types/Shopping';
+import ShoppingRepository from '../Repository/ShoppingRepository';
 
 class ShoppingService {
     private repository: ShoppingRepository;

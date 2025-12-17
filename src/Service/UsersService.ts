@@ -1,10 +1,10 @@
 import z from "zod";
 import { hash, compare } from 'bcrypt';
-import Mailer from "../Lib/Mail/Mailer.ts";
-import TokenService from "./TokenService.ts";
-import { getBody } from "../Lib/Mail/Email.ts";
-import UsersRepository from "../Repository/UsersRepository.ts";
-import type { User, AuthData, UserRead, UserResetPass, Stats } from "../Types/User.ts";
+import Mailer from '../Lib/Mail/Mailer';
+import TokenService from './TokenService';
+import { getBody } from '../Lib/Mail/Email';
+import UsersRepository from '../Repository/UsersRepository';
+import type { User, AuthData, UserRead, UserResetPass, Stats } from '../Types/User';
 
 class UsersService {
 

@@ -1,5 +1,5 @@
-import { History, Visit } from "../Lib/Database/Prisma.ts";
-import type { VisitCreate, VisitDetails, VisitHistory, VisitHistoryStore, VisitShopping } from "../Types/Visit.ts";
+import { History, Visit } from '../Lib/Database/Prisma';
+import type { VisitCreate, VisitDetails, VisitHistory, VisitHistoryStore, VisitShopping } from '../Types/Visit';
 
 class VisitRepository {
 

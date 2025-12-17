@@ -1,9 +1,9 @@
-import type { Visit } from "../Types/Visit.ts";
+import type { Visit } from '../Types/Visit';
 import type { Request, Response } from "express";
-import handleError from "../Lib/Error/Handle.ts";
-import VisitService from "../Service/VisitService.ts";
-import StoreService from "../Service/StoreService.ts";
-import ShoppingService from "../Service/ShoppingService.ts";
+import handleError from '../Lib/Error/Handle';
+import VisitService from '../Service/VisitService';
+import StoreService from '../Service/StoreService';
+import ShoppingService from '../Service/ShoppingService';
 import { number, success } from "zod";
 
 class VisitController {

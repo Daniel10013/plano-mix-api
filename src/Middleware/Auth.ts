@@ -1,4 +1,4 @@
-import { getPayload } from '../Lib/Auth/JWT.ts'
+import { getPayload } from '../Lib/Auth/JWT'
 import type { Request, Response, NextFunction } from "express";
 
 export const authenticate = async (req: Request, res: Response, next: NextFunction) => {

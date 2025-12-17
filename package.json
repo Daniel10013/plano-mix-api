@@ -44,6 +44,5 @@
   },
   "prisma": {
     "seed": "tsx prisma/seed/seed.ts"
-  },
-  "type": "module"
+  }
 }

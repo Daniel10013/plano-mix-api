@@ -1,6 +1,6 @@
 import z, { string } from "zod";
-import ClassificationRepository from "../Repository/ClassificationRepository.ts";
-import type { Classification, ClassificationRead, Segment, Activity, Mix } from "../Types/Classification.ts";
+import ClassificationRepository from '../Repository/ClassificationRepository';
+import type { Classification, ClassificationRead, Segment, Activity, Mix } from '../Types/Classification';
 
 class ClassificationService {
     private repository: ClassificationRepository;

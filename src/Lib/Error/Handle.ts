@@ -1,4 +1,4 @@
-import AppError from "./AppError.ts";
+import AppError from './AppError';
 
 type errorInfo = {
     json: object, 
