@@ -126,7 +126,8 @@ class UsersController {
                 secure: process.env.ENVIRONMENT === "production",
                 sameSite: "none",
                 maxAge: 8 * 60 * 60 * 1000,
-                path: "/"
+                path: "/",
+                partitioned: true,
             });
 
             return res.status(200).json({
