@@ -124,7 +124,7 @@ class UsersController {
             res.cookie("auth_token", jwtToken, {
                 httpOnly: true,
                 secure: process.env.ENVIRONMENT === "production",
-                sameSite: "strict",
+                sameSite: "none",
                 maxAge: 8 * 60 * 60 * 1000,
                 path: "/"
             });
