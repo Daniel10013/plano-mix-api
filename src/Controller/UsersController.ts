@@ -13,6 +13,10 @@ class UsersController {
         this.service = new UsersService();
     }
 
+    public getMe = async (req: Request, res: Response): Promise<Response> => {
+        return res.status(200).json('ok');
+    }
+
     public getAllUsers = async (req: Request, res: Response): Promise<Response> => {
         try {
             const userData = await this.service.getAllUsers();
