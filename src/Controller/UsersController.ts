@@ -81,11 +81,13 @@ class UsersController {
                 message: "Dados invalidos para atualizar"
             });
         }
+
+        const user = await this.service.getById(id);
         const userAlreadyExists = await this.service.userExists(dataToUpdate.email);
-        if (userAlreadyExists == true) {
+        if (dataToUpdate.email != user.email && userAlreadyExists == true) {
             return res.status(409).json({
                 success: false,
-                message: "Já existe um usuário com esses dados!"
+                message: "Já existe um usuário com e-mail!"
             });
         }
         await this.service.updateUser(dataToUpdate, id)
@@ -119,10 +121,37 @@ class UsersController {
             const user: UserRead = await this.service.getByEmail(authData.email);
             const jwtToken = await generateToken(user);
 
+            res.cookie("auth_token", jwtToken, {
+                httpOnly: true,
+                secure: process.env.ENVIRONMENT === "production",
+                sameSite: "strict",
+                maxAge: 8 * 60 * 60 * 1000,
+                path: "/"
+            });
+
             return res.status(200).json({
                 success: true,
-                token: jwtToken
+                message: "Autenticado com sucesso!"
             });
+            
+        } catch (err) {
+            const error = handleError(err as Error);
+            return res.status(error.statusCode).json(error.json);
+        }
+    }
+
+    public destroySession = async (req: Request, res: Response): Promise<Response> => {
+        try {
+            res.cookie("auth_token", "", {
+                httpOnly: true,
+                secure: true,
+                sameSite: "strict",
+                expires: new Date(0),
+            });
+            return res.status(200).json({
+                success: true,
+                message: "Sessão encerrada!"
+            })
         } catch (err) {
             const error = handleError(err as Error);
             return res.status(error.statusCode).json(error.json);
@@ -154,9 +183,8 @@ class UsersController {
 
     public resetPassword = async (req: Request, res: Response): Promise<Response> => {
         try {
-            const token = req.params.token;
-
-            const tokenIsValid = await (new TokenService().validate(token!));
+            const token = req.params.token ?? '';
+            const tokenIsValid = await (new TokenService().validate(token));
             if (tokenIsValid == false) {
                 return res.status(400).json({
                     success: false,
@@ -170,7 +198,7 @@ class UsersController {
             if (canResetPassword == false) {
                 return res.status(400).json({
                     success: false,
-                    message: "Senhas atual incorreta, ou nova inválida para troca!"
+                    message: "Senha inválida ou igual a antiga!"
                 })
             }
 
@@ -195,6 +223,20 @@ class UsersController {
             res.status(200).json({
                 success: true,
                 message: "Usuário deletado com sucesso"
+            })
+        } catch (err) {
+            const error = handleError(err as Error);
+            return res.status(error.statusCode).json(error.json);
+        }
+    }
+
+    public getById = async (req: Request, res: Response) => {
+        try {
+            const id = Number(req.params.id);
+            const user = await this.service.getById(id);
+            res.status(200).json({
+                succes: true,
+                data: user
             })
         } catch (err) {
             const error = handleError(err as Error);

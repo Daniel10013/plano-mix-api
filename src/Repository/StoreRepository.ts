@@ -1,12 +1,47 @@
-import type { Store as StoreData } from "../Types/Store.ts";
-import prisma, {ShoppingStore, Store } from "../Lib/Database/Prisma.ts";
-import type { Visit, VisitStoreCreate, VisitStoreUpdate } from "../Types/Visit.ts";
+import type { Store as StoreData, StoreList } from "../Types/Store.ts";
+import prisma, { ShoppingStore, Store } from "../Lib/Database/Prisma.ts";
+import type { VisitHistoryStore, VisitStoreCreate, VisitStoreUpdate } from "../Types/Visit.ts";
 import type { StoreRead, StoreInShopping, StoreWithClassification } from "../Types/Store.ts";
 
 class StoreRepository {
 
-    public getAll = async (): Promise<StoreRead[]> => {
-        return await Store.findMany();
+    public getAll = async (): Promise<StoreList[]> => {
+        const data = await Store.findMany({
+            select: {
+                id: true,
+                name: true,
+                classification: {
+                    select: {
+                        id: true,
+                        name: true
+                    }
+                },
+                segment: {
+                    select: {
+                        id: true,
+                        name: true
+                    }
+                },
+                activity: {
+                    select: {
+                        id: true,
+                        name: true
+                    }
+                },
+            }
+        });
+        return data.map(s => ({
+            id: s.id,
+            name: s.name,
+            classification_id: s.classification.id,
+            classification: s.classification.name,
+            segment_id: s.segment.id,
+            segment: s.segment.name,
+            ...(s.activity && {
+                activity_id: s.activity.id,
+                activity: s.activity.name
+            })
+        }));
     }
 
     public getById = async (id: number): Promise<StoreRead | null> => {
@@ -15,13 +50,14 @@ class StoreRepository {
         })
     }
 
-    public getManyByIds = async (ids: number[]): Promise<StoreWithClassification[]> => {
-        const stores =  await Store.findMany({
+    public getManyByIds = async (ids: number[], history: VisitHistoryStore[]): Promise<StoreWithClassification[]> => {
+        const stores = await Store.findMany({
             where: {
-                id: {in : ids},
+                id: { in: ids },
             },
             select: {
                 name: true,
+                id: true,
                 activity: {
                     select: { name: true }
                 },
@@ -35,10 +71,11 @@ class StoreRepository {
         });
 
         return stores.map(s => ({
-            name: s.name,    
+            name: s.name,
             classification: s.classification!.name,
             segment: s.segment!.name,
-            activity: s.activity?.name ?? null
+            activity: s.activity?.name ?? null,
+            status: history.find((h)=> h.store_id == s.id)?.status ?? 'deleted'
         }));
     }
 
@@ -61,18 +98,55 @@ class StoreRepository {
 
     public getStoresByShoppingId = async (id: number): Promise<StoreInShopping[]> => {
         const resultado = await prisma.$queryRaw<StoreInShopping[]>`
-    SELECT 
-      s.name AS store_name,
-      m.classification AS store_classification, 
-      m.segment AS store_segment, 
-      p.status AS store_status
-    FROM store s
-    JOIN shopping_store p ON p.store_id = s.id
-    JOIN mix m ON m.activity_id = s.activity_id
-    WHERE p.shopping_id = ${id};
-    `;
+            SELECT 
+                CAST(p.id AS UNSIGNED)  AS id,
+                CAST(s.id AS UNSIGNED)  AS store_id,
+                s.name                  AS name,
+                c.name                  AS classification,
+                CAST(c.id AS UNSIGNED)  AS classification_id,
+                sg.name                 AS segment,
+                CAST(sg.id AS UNSIGNED) AS segment_id,
+                a.name                  AS activity,
+                CAST(a.id AS UNSIGNED)  AS activity_id,
+                sl.name                 AS store_left_name,
+                CAST(sl.id AS UNSIGNED) AS store_left_id,
+                sr.name                 AS store_right_name,
+                CAST(sr.id AS UNSIGNED) AS store_right_id,
+                p.status                AS status
+            FROM store s
+            JOIN shopping_store p 
+                ON p.store_id = s.id
+            JOIN classification c 
+                ON c.id = s.classification_id
+            JOIN segment sg
+                ON sg.id = s.segment_id
+            LEFT JOIN activity a 
+                ON a.id = s.activity_id
+            LEFT JOIN store sl
+                ON sl.id = p.store_id_left
+            LEFT JOIN store sr
+                ON sr.id = p.store_id_right
+            WHERE p.shopping_id = ${id};
+        `;
 
-        return resultado;
+        const data: StoreInShopping[] = resultado.map(r => ({
+            id: Number(r.id),
+            store_id: Number(r.store_id),
+            name: r.name,
+            classification: r.classification,
+            classification_id: Number(r.classification_id),
+            segment: r.segment,
+            segment_id: Number(r.segment_id),
+            activity: r.activity ?? null,
+            activity_id: r.activity_id ? Number(r.activity_id) : null,
+            store_left_name: r.store_left_name,
+            store_left_id: r.store_left_id ? Number(r.store_left_id) : null,
+            store_right_name: r.store_right_name,
+            store_right_id: r.store_right_id ? Number(r.store_right_id) : null,
+            status: r.status
+        }));
+
+        return data;
     }
 
 
@@ -123,14 +197,14 @@ class StoreRepository {
     public updateShoppingStore = async (shoppingStore: VisitStoreUpdate, id: number) => {
         return await ShoppingStore.update({
             data: shoppingStore,
-            where: { id: id}
+            where: { id: id }
         })
     }
 
     public deleteShoppingStore = async (id: number) => {
         return await ShoppingStore.update({
-            data: { status: 'deleted'},
-            where: { id: id}
+            data: { status: 'deleted' },
+            where: { id: id }
         })
     }
 

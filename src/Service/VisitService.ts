@@ -26,8 +26,14 @@ class VisitService {
     public getVisitDetails = async (id: number): Promise<VisitDetailsWithStores> => {
         const visitDetailsData = await this.repository.getVisitDetails(id);
         const visitHistory = await this.repository.getHistoryByVisit(id);
-        const storeIds = Array.from(new Set(visitHistory.flatMap(v => [v.store_id, v.store_id_left, v.store_id_right])));
-        const visitStores = await (new StoreService().getManyByIds(storeIds));
+        const storeIds = Array.from(
+            new Set(
+                visitHistory
+                .flatMap(v => [v.store_id, v.store_id_left, v.store_id_right])
+                .filter((id): id is number => id != null)
+            )
+        );
+        const visitStores = await (new StoreService().getManyByIds(storeIds, visitHistory));
         const visitDetails = 
         {
             ...visitDetailsData,
@@ -37,24 +43,29 @@ class VisitService {
     }
 
     public canCreateVisit = (bodyData: Partial<VisitRequest>): boolean => {
-
         const shoppingStoreValidations = z.object({
-            id: z.number().optional(),
-            store_id: z.number(),
-            shopping_id: z.number(),
-            store_id_right: z.number().optional(),
-            store_id_left: z.number().optional(),
-            status: z.enum(["active", 'deleted']),
-            action: z.enum(["new", "update", "delete", "none"]),
+            id: z.number('id invalido').nullable(),
+            store_id: z.number('Id precisa ser numero'),
+            shopping_id: z.number(' Id do shopping tme que ser numero'),
+            store_id_right: z.number('Id left tem que ser numero').nullable(),
+            store_id_left: z.number('id right tem que ser numero').nullable(),
+            status: z.enum(["active", 'deleted'], 'enum errado'),
+            action: z.enum(["new", "update", "delete", "none"], 'enum 2 errado'),
         });
 
         const validations = z.object({
-            observation: z.string().optional().or(z.literal("")),
-            shopping_id: z.number(),
+            observation: z.string('obseravtion errado').optional().or(z.literal("")),
+            shopping_id: z.number('Shopping id main errado'),
             shopping_stores: z.array(shoppingStoreValidations),
         });
 
-        const dataIsValid = validations.safeParse(bodyData).success;
+        const validation = validations.safeParse(bodyData)
+        const dataIsValid = validation.success;
+        if(validation.success == false){
+            const errors = validation.error.issues.map(issue => issue.message);
+            throw new Error(errors.join(", "))
+        }
+
         return dataIsValid;
     }
 
@@ -79,7 +90,6 @@ class VisitService {
                 return;
             }
             if (store.action == 'new') {
-                console.log('create')
                 return storeService.createShoppingStore(store);
             }
             if (store.action == 'update') {
@@ -92,7 +102,7 @@ class VisitService {
     }
 
     private saveHistory = async (shoppingStores: VisitStore[], visit_id: number) => {
-        const historyJson = shoppingStores.map(({ id, action, status, shopping_id, ...rest }) => rest);
+        const historyJson = shoppingStores.map(({ id, action, shopping_id, ...rest }) => rest);
         const historyToSave: VisitHistory = {
             visit_id: visit_id,
             stores: historyJson
@@ -108,12 +118,25 @@ class VisitService {
         const historyVisit1 = await this.repository.getHistoryByVisit(visit1Id);
         const historyVisit2 = await this.repository.getHistoryByVisit(visit2Id);
 
-        const storeIds1 = Array.from(new Set(historyVisit1.flatMap(v => [v.store_id, v.store_id_left, v.store_id_right])))
-        const storeIds2 = Array.from(new Set(historyVisit2.flatMap(v => [v.store_id, v.store_id_left, v.store_id_right])))
+        const storeIds1 = Array.from(
+            new Set(
+                historyVisit1
+                .flatMap(v => [v.store_id, v.store_id_left, v.store_id_right])
+                .filter((id): id is number => id != null)
+            )
+        );
+
+        const storeIds2 = Array.from(
+            new Set(
+                historyVisit2
+                .flatMap(v => [v.store_id, v.store_id_left, v.store_id_right])
+                .filter((id): id is number => id != null)
+            )
+        );
 
         const storeService = new StoreService();
-        const StoresVisit1 = await storeService.getManyByIds(storeIds1);
-        const StoresVisit2 = await storeService.getManyByIds(storeIds2);
+        const StoresVisit1 = await storeService.getManyByIds(storeIds1, historyVisit1);
+        const StoresVisit2 = await storeService.getManyByIds(storeIds2, historyVisit2);
 
         return {
             visit1: StoresVisit1,

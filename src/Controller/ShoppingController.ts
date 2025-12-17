@@ -2,6 +2,7 @@ import type { Request, Response } from "express";
 import handleError from "../Lib/Error/Handle.ts";
 import type { Shopping } from "../Types/Shopping.ts";
 import ShoppingService from "../Service/ShoppingService.ts";
+import { success } from "zod";
 
 class ShoppingController {
     private service: ShoppingService;
@@ -9,7 +10,7 @@ class ShoppingController {
     public constructor() {
         this.service = new ShoppingService();
     }
-    
+
     public getAllShopping = async (req: Request, res: Response): Promise<Response> => {
         try {
             const shoppingData = await this.service.getShoppingAll();
@@ -32,6 +33,27 @@ class ShoppingController {
                 })
             }
             return res.status(200).json(shoppingData);
+        }
+        catch (err) {
+            const error = handleError(err as Error);
+            return res.status(error.statusCode).json(error.json);
+        }
+    }
+
+    public getAnalyticsClassification = async (req: Request, res: Response): Promise<Response> => {
+        try {
+            const id = Number(req.params.id);
+            const analytics = await this.service.getAnalyticsClassification(id);
+            if(analytics == null) {
+                return res.status(404).json({
+                    success: false,
+                    message: "Nenhum dado disponivel"
+                });
+            }
+            return res.status(200).json({
+                success: true,
+                data: analytics
+            });
         }
         catch (err) {
             const error = handleError(err as Error);
@@ -82,7 +104,7 @@ class ShoppingController {
 
         const cepExist = await this.service.cepExistent(id);
         const shoppingExist = await this.service.shoppingExist(dataToUpdate.zip_code);
-        if(cepExist != dataToUpdate.zip_code && shoppingExist == true){
+        if (cepExist != dataToUpdate.zip_code && shoppingExist == true) {
             return res.status(409).json({
                 success: false,
                 message: "Shopping já cadastrado"
@@ -109,14 +131,7 @@ class ShoppingController {
             const error = handleError(err as Error);
             return res.status(error.statusCode).json(error.json);
         }
-
     }
-
-    public dd(debug: any): void {
-        console.log(debug);
-        process.exit(1);
-    }
-    
 }
 
 export default ShoppingController;

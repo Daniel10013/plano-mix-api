@@ -1,5 +1,5 @@
 import { Classification, Segment, Activity, Mix  } from "../Lib/Database/Prisma.ts";
-import type { Classification as ClassificationData, Segment as SegmentData, Activity as ActivityData, Mix as MixData } from "../Types/Classification.ts";
+import type { Classification as ClassificationData, Segment as SegmentData, Activity as ActivityData, Mix as MixData, ClassificationRead } from "../Types/Classification.ts";
 
 
 
@@ -133,6 +133,19 @@ class ClassificationRepository {
             where: { id: id }
         })
         return !!deleted
+    }
+
+    // funcoes de get all gerais
+    public getAllClassification = async (): Promise<ClassificationRead[]> => {
+        return await Classification.findMany();
+    }
+
+    public getAllSegment = async (): Promise<SegmentData[]> => {
+        return await Segment.findMany();
+    }
+
+    public getAllActivity = async (): Promise<ActivityData[]> => {
+        return await Activity.findMany();
     }
 }
 export default ClassificationRepository;

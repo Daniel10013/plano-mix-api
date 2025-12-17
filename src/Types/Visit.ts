@@ -23,7 +23,7 @@ export type VisitRequest = Omit<Visit, 'id' | 'date' | 'user_id'>
 
 export type VisitCreate = Omit<Visit, 'id' | 'shopping_stores'>
 
-export type VisitHistoryStore = Omit<VisitStore, 'id' | 'shopping_id' | 'status' | 'action'>
+export type VisitHistoryStore = Omit<VisitStore, 'id' | 'shopping_id' | 'action'>
 
 export type VisitHistory = {
     visit_id: number,
@@ -51,6 +51,7 @@ export type VisitDetailsWithStores = VisitDetails & {
 }
 
 export type VisitShopping = {
+    id: number,
     date: Date,
     observation: string | null,
     username: string

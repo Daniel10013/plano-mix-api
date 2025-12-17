@@ -103,5 +103,17 @@ class ClassificationService {
     public deleteActivity = async (id: number): Promise<boolean> => {
         return await this.repository.deleteActivity(id);
     }
+
+    public getAllClassification = async (): Promise<ClassificationRead[]> => {
+        return await this.repository.getAllClassification();
+    }
+
+    public getAllSegment = async (): Promise<Segment[]> => {
+        return await this.repository.getAllSegment();
+    }
+
+    public getAllActivity = async (): Promise<Activity[]> => {
+        return await this.repository.getAllActivity();
+    }
 }
 export default ClassificationService;

@@ -13,7 +13,4 @@ router.post("/many", authenticate, controller.createManyStores);
 router.put("/:id", authenticate, controller.updateStore);
 router.delete("/:id", authenticate, controller.deleteStore);
 
-
-
-
 export default router;

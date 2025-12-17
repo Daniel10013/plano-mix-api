@@ -1,9 +1,9 @@
 INSERT INTO shopping (id, name, observation, zip_code, zip_number) VALUES
-(1, 'Shopping Central', 'Shopping principal da região', 30140000, 100),
-(2, 'Shopping Norte Mall', 'Área comercial em expansão', 30220200, 245),
-(3, 'Plaza Sul Center', 'Shopping tradicional', 30310150, 78),
-(4, 'Estação Shopping', 'Conectado ao terminal', 30490500, 12),
-(5, 'Shopping Premium Park', 'Shopping de alto padrão', 30570880, 410);
+(null, 'Shopping Central', 'Shopping principal da região', 30140000, 100),
+(null, 'Shopping Norte Mall', 'Área comercial em expansão', 30220200, 245),
+(null, 'Plaza Sul Center', 'Shopping tradicional', 30310150, 78),
+(null, 'Estação Shopping', 'Conectado ao terminal', 30490500, 12),
+(null, 'Shopping Premium Park', 'Shopping de alto padrão', 30570880, 410);
 
 INSERT INTO store (id, name, classification_id, segment_id, activity_id) VALUES
 (1, 'Mauro Moda', 4, 57, 1),
@@ -18,23 +18,23 @@ INSERT INTO store (id, name, classification_id, segment_id, activity_id) VALUES
 (10, 'DecorLar', 1, 4, null);
 
 INSERT INTO shopping_store (id, store_id, shopping_id, store_id_right, store_id_left, status) VALUES
-(1, 1, 1, NULL, NULL, 'active'),
-(2, 2, 1, NULL, NULL, 'active'),
-(3, 3, 2, NULL, NULL, 'active'),
-(4, 4, 2, NULL, NULL, 'active'),
-(5, 5, 3, NULL, NULL, 'active'),
-(6, 6, 3, NULL, NULL, 'active'),
-(7, 7, 3, NULL, NULL, 'active'),
-(8, 8, 4, NULL, NULL, 'active'),
-(9, 9, 4, NULL, NULL, 'active'),
-(10, 10, 5, NULL, NULL, 'active'),
-(11, 1, 5, NULL, NULL, 'active'),
-(12, 4, 1, NULL, NULL, 'active'),
-(13, 7, 2, NULL, NULL, 'active'),
-(14, 9, 5, NULL, NULL, 'active'),
-(15, 3, 4, NULL, NULL, 'active');
+(null, 1, 1, NULL, NULL, 'active'),
+(null, 2, 1, NULL, NULL, 'active'),
+(null, 3, 2, NULL, NULL, 'active'),
+(null, 4, 2, NULL, NULL, 'active'),
+(null, 5, 3, NULL, NULL, 'active'),
+(null, 6, 3, NULL, NULL, 'active'),
+(null, 7, 3, NULL, NULL, 'active'),
+(null, 8, 4, NULL, NULL, 'active'),
+(null, 9, 4, NULL, NULL, 'active'),
+(null, 10, 5, NULL, NULL, 'active'),
+(null, 1, 5, NULL, NULL, 'active'),
+(null, 4, 1, NULL, NULL, 'active'),
+(null, 7, 2, NULL, NULL, 'active'),
+(null, 9, 5, NULL, NULL, 'active'),
+(null, 3, 4, NULL, NULL, 'active');
 
 INSERT INTO visit (id, date, observation, user_id, shopping_id) VALUES
-(1, '2025-02-01', 'Primeira visita', 1, 1),
-(2, '2025-02-02', 'Visita de inspeção', 1, 2),
-(3, '2025-02-05', 'Reunião com gestor', 1, 3);
+(null, '2025-02-01', 'Primeira visita', 1, 1),
+(null, '2025-02-02', 'Visita de inspeção', 1, 2),
+(null, '2025-02-05', 'Reunião com gestor', 1, 3);

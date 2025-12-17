@@ -2,9 +2,14 @@ import { getPayload } from '../Lib/Auth/JWT.ts'
 import type { Request, Response, NextFunction } from "express";
 
 export const authenticate = async (req: Request, res: Response, next: NextFunction) => {
-    const token = req.headers.authorization?.split(' ')[1];
+    const token = req.cookies?.auth_token;
+
     if (!token) {
-        return res.status(401).json({ success: false, message: 'Token não fornecido' });
+        return res.status(401).json({ 
+            success: false,
+            code: 'UNAUTHENTICATED',
+            message: 'Não autenticado' 
+        });
     }
 
     try {
@@ -12,6 +17,10 @@ export const authenticate = async (req: Request, res: Response, next: NextFuncti
         req.user = payload;
         return next();
     } catch {
-        return res.status(401).json({ success: false, message: 'Token inválido ou expirado' });
+        return res.status(401).json({ 
+            success: false,
+            code: 'UNAUTHENTICATED',
+            message: 'Token inválido ou expirado' 
+        });
     }
 };

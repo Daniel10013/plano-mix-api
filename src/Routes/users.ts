@@ -8,6 +8,8 @@ const controller = new UsersController();
 
 router.get('/', controller.getAllUsers);
 router.get("/home", controller.getStats);
+router.get('/:id', controller.getById);
+router.get('/auth/logout', controller.destroySession);
 router.post('/', controller.createUser);
 router.post('/auth', controller.auth);
 router.post('/send-reset-link', controller.sendResetToken);

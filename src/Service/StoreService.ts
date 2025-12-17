@@ -1,7 +1,7 @@
 import z from "zod";
-import type { Store, StoreRead, StoreInShopping, StoreWithClassification } from "../Types/Store.ts";
 import StoreRepository from "../Repository/StoreRepository.ts";
-import type { Visit, VisitStore, VisitStoreCreate, VisitStoreUpdate } from "../Types/Visit.ts";
+import type { VisitHistoryStore, VisitStore, VisitStoreCreate, VisitStoreUpdate } from "../Types/Visit.ts";
+import type { Store, StoreRead, StoreInShopping, StoreWithClassification, StoreList } from "../Types/Store.ts";
 
 class StoreService {
     private repository: StoreRepository;
@@ -10,12 +10,12 @@ class StoreService {
         this.repository = new StoreRepository();
     }
 
-    public getAllStore = async (): Promise<StoreRead[]> => {
+    public getAllStore = async (): Promise<StoreList[]> => {
         return await this.repository.getAll();
     }
 
-    public getManyByIds = async (ids: number[]): Promise<StoreWithClassification[]> => {
-        return await this.repository.getManyByIds(ids);
+    public getManyByIds = async (ids: number[], history:  VisitHistoryStore[]): Promise<StoreWithClassification[]> => {
+        return await this.repository.getManyByIds(ids, history);
     }
 
     public getStoreById = async (id: number): Promise<StoreRead | null> => {
@@ -66,7 +66,13 @@ class StoreService {
             return false;
         }
 
-        const idsToCheck = Array.from(new Set(stores.flatMap(v => [v.store_id, v.store_id_left, v.store_id_right])));
+        const idsToCheck = Array.from(
+            new Set(
+                stores
+                .flatMap(v => [v.store_id, v.store_id_left, v.store_id_right])
+                .filter((id): id is number => id !== null)
+            )
+        );
         return await this.repository.visitStoresExists(idsToCheck) == idsToCheck.length;
     }
 

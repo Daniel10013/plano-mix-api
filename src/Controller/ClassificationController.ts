@@ -376,6 +376,47 @@ class ClassificationController {
         }
     }
 
+    public getAllClassification = async (req: Request, res: Response): Promise<Response> => {
+        try {
+            const data = await this.service.getAllClassification();
+            return res.status(200).json({
+                success: true,
+                data: data
+            })
+        }
+        catch (err) {
+            const error = handleError(err as Error);
+            return res.status(error.statusCode).json(error.json);
+        }
+    }
+
+    public getAllSegment = async (req: Request, res: Response): Promise<Response> => {
+        try {
+            const data = await this.service.getAllSegment();
+            return res.status(200).json({
+                success: true,
+                data: data
+            })
+        }
+        catch (err) {
+            const error = handleError(err as Error);
+            return res.status(error.statusCode).json(error.json);
+        }
+    }
+
+        public getAllActivity = async (req: Request, res: Response): Promise<Response> => {
+        try {
+            const data = await this.service.getAllActivity();
+            return res.status(200).json({
+                success: true,
+                data: data
+            })
+        }
+        catch (err) {
+            const error = handleError(err as Error);
+            return res.status(error.statusCode).json(error.json);
+        }
+    }
 }
 
 

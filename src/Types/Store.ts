@@ -1,20 +1,40 @@
 export type Store = {
     name: string,
-    classification_id : number,
-    segment_id : number,
-    activity_id : number | null
-    
+    classification_id: number,
+    segment_id: number,
+    activity_id: number | null
 }
 
 export type StoreRead = Store & {
     id: number
 }
 
+export type StoreList = {
+    id: number
+    name: string,
+    classification_id: number,
+    classification: string,
+    segment_id: number,
+    segment: string,
+    activity_id?: number,
+    activity?: string
+}
+
 export type StoreInShopping = {
-    store_name: string,
-    store_classification: string,
-    store_segment: string,
-    store_status: string
+    id: number
+    store_id: number,
+    name: string,
+    classification_id: number,
+    classification: string,
+    segment_id: number,
+    segment: string,
+    activity_id: number | null,
+    activity: string | null,
+    store_left_name: string | null,
+    store_left_id: number | null,
+    store_right_name: string | null,
+    store_right_id: number | null,
+    status: 'active' | 'deleted'
 }
 
 export type StoreWithClassification = {
@@ -22,4 +42,5 @@ export type StoreWithClassification = {
     classification: string,
     segment: string,
     activity: string | null
+    status: 'active' | 'deleted'
 }

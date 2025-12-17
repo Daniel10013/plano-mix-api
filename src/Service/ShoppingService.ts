@@ -1,5 +1,5 @@
 import z from "zod";
-import type { Shopping, ShoppingRead } from "../Types/Shopping.ts";
+import type { AnalyticClassification, Shopping, ShoppingRead } from "../Types/Shopping.ts";
 import ShoppingRepository from "../Repository/ShoppingRepository.ts";
 
 class ShoppingService {
@@ -15,6 +15,10 @@ class ShoppingService {
 
     public getShoppingById = async (id: number): Promise<ShoppingRead | null> => {
         return await this.repository.getById(id);
+    }
+
+    public getAnalyticsClassification = async (id: number): Promise<AnalyticClassification> => {
+        return await this.repository.getAnalyticsClassification(id);
     }
 
     public canCreateShopping = (reqBody?: Partial<Shopping>): boolean => {

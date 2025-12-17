@@ -168,11 +168,6 @@ class StoreController {
             return res.status(error.statusCode).json(error.json);
         }
     }
-
-    public dd(debug: any): void {
-        console.log(debug);
-        process.exit(1);
-    }
 }
 
 export default StoreController;

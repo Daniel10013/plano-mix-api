@@ -5,7 +5,27 @@ class VisitRepository {
 
 
     public getAllVisits = async () => {
-        return await Visit.findMany();
+        return await Visit.findMany({
+            orderBy: {
+                date : "desc"
+            },
+            select: {
+                id : true,
+                date: true,
+                observation: true,
+                shopping: {
+                    select : {
+                        id: true,
+                        name: true
+                    }
+                },
+                user : {
+                    select: {
+                        name: true
+                    }
+                }
+            }
+        });
     }
 
 public getVisitByShoppingId = async (id: number): Promise<VisitShopping[]> => {
@@ -14,6 +34,7 @@ public getVisitByShoppingId = async (id: number): Promise<VisitShopping[]> => {
             shopping_id: id
         },
         select: {
+            id: true,
             date: true,
             observation: true,
             user: {
@@ -28,6 +49,7 @@ public getVisitByShoppingId = async (id: number): Promise<VisitShopping[]> => {
     });
 
     const formattedVisits: VisitShopping[] = visits.map(visit => ({
+        id: visit.id,
         date: visit.date, 
         observation: visit.observation ?? "", 
         username: visit.user?.name ?? "Desconhecido" 
@@ -91,8 +113,8 @@ public getVisitByShoppingId = async (id: number): Promise<VisitShopping[]> => {
         const data = await History.findFirst({
             where: { visit_id: id },
             select: {
-                stores: true
-            }
+                stores: true,
+            }, 
         });
         if (data == null) {
             return [];

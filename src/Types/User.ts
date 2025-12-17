@@ -17,8 +17,8 @@ export type JWTPayload = Omit<User, 'id'| 'password'>  & {
 }
 
 export type UserResetPass = {
-	password_old: string, 
 	password_new: string
+	confirm_pass: string, 
 }
 
 export type Stats = {

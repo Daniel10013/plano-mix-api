@@ -7,3 +7,14 @@ export type Shopping = {
 export type ShoppingRead = Shopping & {
     id: number;
 };
+
+export type AnalyticClassification = {
+    LOJAS_ANCORA: number,
+    SEMI_ANCORA:number,
+    MEGALOJAS:number,
+    LOJAS_SATELITE:number,
+    CONVENIENCIA_SERVICOS:number,
+    ENTRETENIMENTO:number,
+    MALL_E_MERCHANDISING: number,
+    TOTAL: number
+}

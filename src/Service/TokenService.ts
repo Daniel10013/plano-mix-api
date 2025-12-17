@@ -31,7 +31,7 @@ class TokenService {
     }
 
     public validate = async (request_token: string): Promise<boolean> => {
-        if(!request_token == null){
+        if(!request_token){
             return false;
         }
 

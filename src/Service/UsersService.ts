@@ -1,7 +1,8 @@
-import z, { email } from "zod";
+import z from "zod";
 import { hash, compare } from 'bcrypt';
 import Mailer from "../Lib/Mail/Mailer.ts";
 import TokenService from "./TokenService.ts";
+import { getBody } from "../Lib/Mail/Email.ts";
 import UsersRepository from "../Repository/UsersRepository.ts";
 import type { User, AuthData, UserRead, UserResetPass, Stats } from "../Types/User.ts";
 
@@ -12,7 +13,6 @@ class UsersService {
 	constructor() {
 		this.repository = new UsersRepository();
 	}
-
 
 	public getAllUsers = async (): Promise<UserRead[]> => {
 		return await this.repository.getAll();
@@ -89,30 +89,30 @@ class UsersService {
 	}
 
 	private sendResetPasswordLink = async (emailTo: string, token: string) => {
-		const urlType = process.env.ENVIRONMENT == "development" ? "http://localhost:5173" : "https://plano-mix.com/";
-		const urlReset = `${urlType}/redefinir-senha?token=${token}`
-		const emailBody = `
-			<h1>Redefinir senha!</h1>
-			<p>Se não foi você quem pediu esse e-mail, fique tranquilo e pode ignorar esse e-mail!</p>
-			<p>Se você quer trocar sua senha, so clicar no link abaixo!</p>
-			<a href="${urlReset}">Trocar Senha</a>
-		`;
+		const urlType = process.env.ENVIRONMENT == "development" ? "http://localhost:3001" : process.env.APP_URL;
+		const urlReset = `${urlType}/reset-password?token=${token}`
+		const emailBody = getBody(urlReset);
 		new Mailer().send(emailTo, 'Redefinir Senha', emailBody)
 	}
 
 	public canResetPassword = async (idUser: number, body?: UserResetPass): Promise<boolean> => {
 		const validtions = z.object({
-			password_old: z.string().min(8),
 			password_new: z.string().min(8),
+			confirm_pass: z.string().min(8),
 		});
 
 		if (validtions.safeParse(body).success == false) {
 			return false;
 		}
 
+		if(body?.confirm_pass != body?.password_new){
+			return false;
+		}
+
+
 		const oldPass = await this.repository.getPasswordById(idUser);
-		const passwordIsCorrect = await compare(body?.password_old!, oldPass);
-		if (passwordIsCorrect == false) {
+		const passwordIsOld = await compare(body?.password_new!, oldPass);
+		if (passwordIsOld == true) {
 			return false;
 		}
 
@@ -126,6 +126,10 @@ class UsersService {
 
 	public deleteUser = async (id: number): Promise<boolean> => {
 		return await this.repository.delete(id);
+	}
+
+	public getById = async (id: number): Promise<UserRead> => {
+		return await this.repository.getById(id);
 	}
 }
 

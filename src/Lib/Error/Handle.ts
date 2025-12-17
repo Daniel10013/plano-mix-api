@@ -15,7 +15,6 @@ const handleError = (errorObj: Error): errorInfo => {
             statusCode: errorObj.status_code
         }
     }
-    console.log(errorObj);
     return {
         json: {
             success: false,
