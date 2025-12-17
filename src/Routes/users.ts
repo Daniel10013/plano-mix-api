@@ -7,9 +7,9 @@ const router = Router();
 const controller = new UsersController();
 
 router.get('/', controller.getAllUsers);
-router.get('/me', authenticate, controller.getMe);
-router.get("/home", controller.getStats);
+router.get('/get-me', authenticate, controller.getMe);
 router.get('/:id', controller.getById);
+router.get("/home", controller.getStats);
 router.get('/auth/logout', controller.destroySession);
 router.post('/', authenticate, admin, controller.createUser);
 router.post('/auth', controller.auth);
