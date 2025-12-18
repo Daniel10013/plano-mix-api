@@ -13,13 +13,11 @@ class Mailer {
 
 
     public send = async (to: string, subject: string, body: string) => {
-        await new Promise((resolve, reject) => {
-            this.resendMailer.emails.send({
-                from: 'planomixViashopping@gmail.com',
-                to: to,
-                subject: subject,
-                html: body
-            });
+        return await this.resendMailer.emails.send({
+            from: 'Acme <onboarding@resend.dev>',
+            to: to,
+            subject: subject,
+            html: body
         });
     }
 }
