@@ -33,14 +33,14 @@ class UsersController {
     }
 
     public getStats = async (req: Request, res: Response): Promise<Response> => {
-        try{
+        try {
             const statsData = await this.service.getStats();
             return res.status(200).json({
                 success: true,
                 data: statsData
             });
         }
-        catch(err){
+        catch (err) {
             const error = handleError(err as Error);
             return res.status(error.statusCode).json(error.json);
         }
@@ -139,7 +139,7 @@ class UsersController {
                 success: true,
                 message: "Autenticado com sucesso!"
             });
-            
+
         } catch (err) {
             const error = handleError(err as Error);
             return res.status(error.statusCode).json(error.json);
@@ -148,16 +148,18 @@ class UsersController {
 
     public destroySession = async (req: Request, res: Response): Promise<Response> => {
         try {
-            res.cookie("auth_token", "", {
+            res.clearCookie("auth_token", {
                 httpOnly: true,
-                secure: true,
-                sameSite: "strict",
-                expires: new Date(0),
+                secure: process.env.ENVIRONMENT === "production",
+                sameSite: "none",
+                path: "/",
+                partitioned: true,
             });
+
             return res.status(200).json({
                 success: true,
                 message: "Sessão encerrada!"
-            })
+            });
         } catch (err) {
             const error = handleError(err as Error);
             return res.status(error.statusCode).json(error.json);
