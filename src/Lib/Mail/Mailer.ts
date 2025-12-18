@@ -1,26 +1,25 @@
-import { createTransport } from "nodemailer";
+import { Resend } from "resend";
 
 class Mailer {
 
-    private transporter;
+    private resendMailer: Resend;
 
     public constructor() {
-        this.transporter = createTransport({
-            service: "gmail",
-            auth: {
-                user: process.env.EMAIL_USER,
-                pass: process.env.EMAIL_PASS,
-            },
-        });
+        if (!process.env.RESEND_API_KEY) {
+            throw new Error('API key do mailer faltando');
+        }
+        this.resendMailer = new Resend(process.env.RESEND_API_KEY);
     }
 
 
-    public send = async(to: string, subject: string, body: string) => {
-        this.transporter.sendMail({
-            from: process.env.MAIL_USER,
-            to,
-            subject,
-            html: body,
+    public send = async (to: string, subject: string, body: string) => {
+        await new Promise((resolve, reject) => {
+            this.resendMailer.emails.send({
+                from: 'planomixViashopping@gmail.com',
+                to: to,
+                subject: subject,
+                html: body
+            });
         });
     }
 }
