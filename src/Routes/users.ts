@@ -15,7 +15,7 @@ router.post('/auth', controller.auth);
 router.post('/send-reset-link', controller.sendResetToken);
 router.patch('/reset-password/:token', controller.resetPassword);
 router.delete('/:id', authenticate, admin, controller.deleteUser);
-router.get('/:id', controller.getById);
+router.get('/details/:id', controller.getById);
 router.put("/:id", authenticate, admin, controller.updateUser);
 
 export default router;
