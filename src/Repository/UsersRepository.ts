@@ -69,10 +69,6 @@ class UsersRepository {
 	}
 
 	public getById = async (id: number): Promise<UserRead> => {
-		if(!id) {
-			throw(console.trace('TRACE AQUI'));
-		}
-		
 		const user = await User.findFirst({
 			where: { id: id },
 			select: {
@@ -86,8 +82,6 @@ class UsersRepository {
 	}
 
 	public getPasswordById = async (id: number): Promise<string> => {
-		console.log(id);
-		console.trace('CHEGUEI AQUI')
 		const user = await User.findFirst({
 			where: { id: id },
 			select: {
