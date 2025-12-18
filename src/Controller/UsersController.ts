@@ -14,6 +14,7 @@ class UsersController {
     }
 
     public getMe = async (req: Request, res: Response): Promise<Response> => {
+        res.header('Cache-Control', 'no-store, no-cache, must-revalidate');
         return res.status(200).json(req.user);
     }
 
