@@ -27,7 +27,7 @@
     "dotenv": "^17.2.3",
     "express": "^5.1.0",
     "jose": "^6.1.0",
-    "nodemailer": "^7.0.10",
+    "resend": "^6.6.0",
     "zod": "^4.1.12"
   },
   "devDependencies": {
