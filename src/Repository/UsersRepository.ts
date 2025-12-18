@@ -69,6 +69,10 @@ class UsersRepository {
 	}
 
 	public getById = async (id: number): Promise<UserRead> => {
+		if(!id) {
+			throw(console.trace('TRACE AQUI'));
+		}
+		
 		const user = await User.findFirst({
 			where: { id: id },
 			select: {
