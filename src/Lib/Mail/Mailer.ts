@@ -1,23 +1,26 @@
-import { Resend } from "resend";
+import { createTransport } from "nodemailer";
 
 class Mailer {
 
-    private resendMailer: Resend;
+    private transporter;
 
     public constructor() {
-        if (!process.env.RESEND_API_KEY) {
-            throw new Error('API key do mailer faltando');
-        }
-        this.resendMailer = new Resend(process.env.RESEND_API_KEY);
+        this.transporter = createTransport({
+            service: "gmail",
+            auth: {
+                user: process.env.EMAIL_USER,
+                pass: process.env.EMAIL_PASS,
+            },
+        });
     }
 
 
-    public send = async (to: string, subject: string, body: string) => {
-        return await this.resendMailer.emails.send({
-            from: 'Acme <onboarding@resend.dev>',
-            to: to,
-            subject: subject,
-            html: body
+    public send = async(to: string, subject: string, body: string) => {
+        this.transporter.sendMail({
+            from: `PlanoMix <noreply@brevo.com>`,
+            to,
+            subject,
+            html: body,
         });
     }
 }
