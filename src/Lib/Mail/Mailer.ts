@@ -1,22 +1,42 @@
-import nodemailer from "nodemailer";
-
 class Mailer {
+    private apiKey: string;
 
-    private transporter;
-
-    public constructor() {
-        const poolConfig = `smtp://${process.env.EMAIL_USER}:${process.env.EMAIL_PASS}@${process.env.EMAIL_HOST}:${process.env.EMAIL_PORT}/?pool=true`;
-        this.transporter = nodemailer.createTransport(poolConfig);
+    constructor() {
+        if (!process.env.EMAIL_PASS) {
+            throw new Error("BREVO_API_KEY não definida");
+        }
+        this.apiKey = process.env.EMAIL_PASS;
     }
 
-
-    public send = async(to: string, subject: string, body: string) => {
-        this.transporter.sendMail({
-            from: `PlanoMix <noreply@brevo.com>`,
-            to,
-            subject,
-            html: body,
+    async send(to: string, subject: string, body: string) {
+        const response = await fetch("https://api.brevo.com/v3/smtp/email", {
+            method: "POST",
+            headers: {
+                "accept": "application/json",
+                "content-type": "application/json",
+                "api-key": this.apiKey,
+            },
+            body: JSON.stringify({
+                sender: {
+                    name: "PlanoMix",
+                    email: "noreply@brevo.com",
+                },
+                to: [
+                    {
+                        email: to,
+                    },
+                ],
+                subject,
+                htmlContent: body,
+            }),
         });
+
+        if (!response.ok) {
+            const error = await response.text();
+            throw new Error(`Erro ao enviar email: ${error}`);
+        }
+
+        return await response.json();
     }
 }
 
