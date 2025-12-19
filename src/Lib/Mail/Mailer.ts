@@ -9,6 +9,7 @@ class Mailer {
     }
 
     async send(to: string, subject: string, body: string) {
+        console.log(this.apiKey);
         const response = await fetch("https://api.brevo.com/v3/smtp/email", {
             method: "POST",
             headers: {
