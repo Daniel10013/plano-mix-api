@@ -6,7 +6,7 @@ class Mailer {
 
     public constructor() {
         this.transporter = createTransport({
-            service: "gmail",
+            service: process.env.MAIL_SERVER,
             auth: {
                 user: process.env.EMAIL_USER,
                 pass: process.env.EMAIL_PASS,
