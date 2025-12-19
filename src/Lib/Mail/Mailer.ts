@@ -5,15 +5,8 @@ class Mailer {
     private transporter;
 
     public constructor() {
-        this.transporter = nodemailer.createTransport<any>({
-            host: process.env.EMAIL_HOST,
-            port: process.env.EMAIL_PORT,
-            secure: false,
-            auth: {
-                user: process.env.EMAIL_USER,
-                pass: process.env.EMAIL_PASS,
-            },  
-        });
+        const poolConfig = `smtp://${process.env.EMAIL_USER}:${process.env.EMAIL_PASS}@${process.env.EMAIL_HOST}:${process.env.EMAIL_PORT}/?pool=true`;
+        this.transporter = nodemailer.createTransport(poolConfig);
     }
 
 
