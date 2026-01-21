@@ -4,7 +4,6 @@ import type { User, AuthData, UserRead, UserResetPass } from '../Types/User';
 import handleError from '../Lib/Error/Handle';
 import { generateToken } from '../Lib/Auth/JWT';
 import TokenService from '../Service/TokenService';
-import { success } from "zod";
 
 class UsersController {
     private service: UsersService;
@@ -126,13 +125,15 @@ class UsersController {
             const user: UserRead = await this.service.getByEmail(authData.email);
             const jwtToken = await generateToken(user);
 
+            const isProd = process.env.ENVIRONMENT === "production";
+
             res.cookie("auth_token", jwtToken, {
                 httpOnly: true,
-                secure: process.env.ENVIRONMENT === "production",
-                sameSite: "none",
+                secure: isProd,
+                sameSite: isProd ? "none" : "lax",
                 maxAge: 8 * 60 * 60 * 1000,
                 path: "/",
-                partitioned: true,
+                partitioned: isProd,
             });
 
             return res.status(200).json({
@@ -148,12 +149,13 @@ class UsersController {
 
     public destroySession = async (req: Request, res: Response): Promise<Response> => {
         try {
+            const isProd = process.env.ENVIRONMENT === "production";
             res.clearCookie("auth_token", {
                 httpOnly: true,
-                secure: process.env.ENVIRONMENT === "production",
-                sameSite: "none",
+                secure: isProd,
+                sameSite: isProd ? "none" : "lax",
                 path: "/",
-                partitioned: true,
+                partitioned: isProd,
             });
 
             return res.status(200).json({
