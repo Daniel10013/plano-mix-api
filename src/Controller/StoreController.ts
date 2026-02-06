@@ -61,7 +61,7 @@ class StoreController {
             if (canCreateStore == false) {
                 return res.status(400).json({
                     success: false,
-                    message: "Dados invalidos para adicionar Store"
+                    message: "Dados invalidos para adicionar loja"
                 })
             }
             const storeData: Store = req.body;
@@ -69,14 +69,15 @@ class StoreController {
             if (storeExist == true) {
                 return res.status(409).json({
                     success: false,
-                    message: "Store já cadastrado"
+                    message: "Loja já cadastrada"
                 })
             }
 
-            await this.service.createStore(storeData);
+            const id = await this.service.createStore(storeData);
             return res.status(200).json({
                 success: true,
-                message: "Store adicionada com sucesso"
+                message: "Loja adicionada com sucesso",
+                id: id
             })
         }
         catch (err) {

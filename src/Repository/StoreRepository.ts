@@ -1,7 +1,7 @@
 import type { Store as StoreData, StoreList } from '../Types/Store';
 import prisma, { ShoppingStore, Store } from '../Lib/Database/Prisma';
 import type { VisitHistoryStore, VisitStoreCreate, VisitStoreUpdate } from '../Types/Visit';
-import type { StoreRead, StoreInShopping, StoreWithClassification } from '../Types/Store';
+import type { StoreById, StoreInShopping, StoreWithClassification } from '../Types/Store';
 
 class StoreRepository {
 
@@ -44,11 +44,38 @@ class StoreRepository {
         }));
     }
 
-    public getById = async (id: number): Promise<StoreRead | null> => {
-        return await Store.findUnique({
-            where: { id: id }
-        })
-    }
+    public getById = async (id: number): Promise<StoreById | null> => {
+        const store = await prisma.store.findUnique({
+            where: { id },
+            select: {
+                id: true,
+                name: true,
+                classification: {
+                    select: { id: true, name: true },
+                },
+                segment: {
+                    select: { id: true, name: true },
+                },
+                activity: {
+                    select: { id: true, name: true },
+                },
+            },
+        });
+
+        if (!store) return null;
+
+        return {
+            id: store.id,
+            name: store.name,
+            classification_id: store.classification.id,
+            classification: store.classification.name,
+            segment_id: store.segment.id,
+            segment: store.segment.name,
+            activity_id: store.activity?.id ?? null,
+            activity: store.activity?.name ?? null,
+        };
+    };
+
 
     public getManyByIds = async (ids: number[], history: VisitHistoryStore[]): Promise<StoreWithClassification[]> => {
         const stores = await Store.findMany({
@@ -75,7 +102,7 @@ class StoreRepository {
             classification: s.classification!.name,
             segment: s.segment!.name,
             activity: s.activity?.name ?? null,
-            status: history.find((h)=> h.store_id == s.id)?.status ?? 'deleted'
+            status: history.find((h) => h.store_id == s.id)?.status ?? 'deleted'
         }));
     }
 
@@ -183,7 +210,7 @@ class StoreRepository {
     public visitStoresExists = async (ids: number[]): Promise<number> => {
         return await Store.count({
             where: {
-                id: {in: ids} 
+                id: { in: ids }
             }
         })
     }

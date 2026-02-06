@@ -1,7 +1,7 @@
 import z from "zod";
 import StoreRepository from '../Repository/StoreRepository';
 import type { VisitHistoryStore, VisitStore, VisitStoreCreate, VisitStoreUpdate } from '../Types/Visit';
-import type { Store, StoreRead, StoreInShopping, StoreWithClassification, StoreList } from '../Types/Store';
+import type { Store, StoreById, StoreInShopping, StoreWithClassification, StoreList } from '../Types/Store';
 
 class StoreService {
     private repository: StoreRepository;
@@ -18,7 +18,7 @@ class StoreService {
         return await this.repository.getManyByIds(ids, history);
     }
 
-    public getStoreById = async (id: number): Promise<StoreRead | null> => {
+    public getStoreById = async (id: number): Promise<StoreById | null> => {
         return await this.repository.getById(id);
     }
 

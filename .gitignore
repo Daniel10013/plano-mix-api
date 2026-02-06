@@ -2,4 +2,3 @@
 /src/generated/prisma
 .env
 dist
-docker-compose.yml

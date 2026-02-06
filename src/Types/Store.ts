@@ -9,6 +9,17 @@ export type StoreRead = Store & {
     id: number
 }
 
+export type StoreById = {
+    id: number,
+    name: string,
+    classification_id: number,
+    classification: string,
+    segment_id: number,
+    segment: string,
+    activity_id: number | null,
+    activity: string | null,
+}
+
 export type StoreList = {
     id: number
     name: string,
